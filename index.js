@@ -6,12 +6,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "./public")));
 
 const nedb = require("gray-nedb");
-const db= new nedb({filename:'emp.db', autoload:true});
+const db = new nedb({ filename: "emp.db", autoload: true });
 
-const mustache = require('mustache-express');
-app.engine('mustache', mustache());
-app.set('view engine', 'mustache');
-
+const mustache = require("mustache-express");
+app.engine("mustache", mustache());
+app.set("view engine", "mustache");
 
 // db.insert({ name:'Fred Flintstone'}, function(err, newDoc){
 //     if(err) {
@@ -19,28 +18,28 @@ app.set('view engine', 'mustache');
 //     } else {
 //         console.log('document inserted',newDoc);
 //     }
-// }); 
+// });
 // db.insert({ name:'Jane Doe'}, function(err, newDoc){
 //     if(err) {
 //         console.log('error',err);
 //     } else {
 //         console.log('document inserted',newDoc);
 //     }
-// }); 
+// });
 // db.insert({ name:'Allan Grey'}, function(err, newDoc){
 //     if(err) {
 //         console.log('error',err);
 //     } else {
 //         console.log('document inserted',newDoc);
 //     }
-// }); 
+// });
 // db.insert({ name:'John Brown'}, function(err, newDoc){
 //     if(err) {
 //         console.log('error',err);
 //     } else {
 //         console.log('document inserted',newDoc);
 //     }
-// }); 
+// });
 
 // db.find({},function(err,docs){
 //     if(err){
@@ -74,53 +73,45 @@ app.set('view engine', 'mustache');
 
 //add
 app.post("/add", function (req, res) {
-    db.insert({ name: req.body.name }, function (err, newDoc) {
-      if (err) {
-        console.log("error", err);
-      } else {
-        console.log("document inserted", newDoc);
-      }
-    });
+  db.insert({ name: req.body.name }, function (err, newDoc) {
+    if (err) {
+      console.log("error", err);
+    } else {
+      console.log("document inserted", newDoc);
+    }
   });
-  
-
+});
 
 // Show all
 app.post("/showall", function (req, res) {
-    db.find({}, function (err, docs) {
-      if (err) {
-        console.log("error");
-      } else {
-        console.log("documents retrieved: ", docs);
-       
-        res.render('employeeData', {
-            'employee': docs
-         });
-         // res.json(docs);
-      }
-    });
-  });
+  db.find({}, function (err, docs) {
+    if (err) {
+      console.log("error");
+    } else {
+      console.log("documents retrieved: ", docs);
 
-  // View
-app.post("/view", function (req, res) {
-    db.find({ name: req.body.name }, function (err, docs) {
-      if (err) {
-        console.log("error");
-      } else {
-        console.log("documents retrieved: ", docs);
-        res.render('employeeData', {
-            'employee': docs
-         })
-      }
-    });
+      res.render("employeeData", {
+        employee: docs,
+      });
+      // res.json(docs);
+    }
   });
-  
+});
 
 // View
-  
+app.post("/view", function (req, res) {
+  db.find({ name: req.body.name }, function (err, docs) {
+    if (err) {
+      console.log("error");
+    } else {
+      console.log("documents retrieved: ", docs);
+      res.render("employeeData", {
+        employee: docs,
+      });
+    }
+  });
+});
 
-
-
-app.listen(3000,() =>{
+app.listen(3000, () => {
   console.log("Server listening on port: 3000");
 });

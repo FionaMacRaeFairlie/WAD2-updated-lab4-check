@@ -3,10 +3,12 @@ const path = require("path");
 
 const app = express();
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "./public")));
+app.use(express.static(path.join(__dirname, "public")));
+
+app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); 
 
 const nedb = require("gray-nedb");
-const db = new nedb({ filename: "emp.db", autoload: true });
+const db = new nedb({ filename: "./database/emp.db", autoload: true });   
 
 const mustache = require("mustache-express");
 app.engine("mustache", mustache());
